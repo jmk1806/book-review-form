@@ -14,7 +14,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <main className="app">
+          <Component {...pageProps} />
+        </main>
       </ThemeProvider>
     </QueryClientProvider>
   );
