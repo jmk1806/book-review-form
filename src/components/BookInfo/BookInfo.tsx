@@ -26,7 +26,7 @@ export function BookInfo() {
           size="small"
         />
       </FormGrid>
-      <FormGrid size={6}>
+      <FormGrid size={4}>
         <FormLabel htmlFor="book-author" required>
           저자
         </FormLabel>
@@ -40,7 +40,21 @@ export function BookInfo() {
           size="small"
         />
       </FormGrid>
-      <FormGrid size={6}>
+      <FormGrid size={4}>
+        <FormLabel htmlFor="book-page" required>
+          전체 페이지
+        </FormLabel>
+        <OutlinedInput
+          id="book-page"
+          name="book-page"
+          type="number"
+          placeholder="전체 페이지"
+          autoComplete="book-page"
+          required
+          size="small"
+        />
+      </FormGrid>
+      <FormGrid size={4}>
         <FormLabel htmlFor="book-status" required>
           독서 상태
         </FormLabel>
