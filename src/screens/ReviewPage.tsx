@@ -55,7 +55,7 @@ export default function ReviewPage() {
           >
             <Stepper activeStep={activeStep}>
               {STEPS.map((step) => (
-                <Step key={step} sx={{ ':first-child': { pl: 0 }, ':last-child': { pr: 0 } }}>
+                <Step key={step} sx={{ ':first-of-type': { pl: 0 }, ':last-of-type': { pr: 0 } }}>
                   <StepLabel>{STEP_LABELS[step]}</StepLabel>
                 </Step>
               ))}
