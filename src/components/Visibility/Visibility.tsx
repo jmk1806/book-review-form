@@ -1,6 +1,8 @@
-import { FormLabel, RadioGroup, FormControlLabel, Radio, TextField } from '@mui/material';
+import { FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
+import { useFormContext, Controller } from 'react-hook-form';
+import type { BookReviewForm } from '@/types/BookReviewForm';
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -8,16 +10,29 @@ const FormGrid = styled(Grid)(() => ({
 }));
 
 export function Visibility() {
+  const { control } = useFormContext<BookReviewForm>();
+
   return (
     <Grid container spacing={3}>
       <FormGrid size={12}>
         <FormLabel htmlFor="book-visibility" required>
           도서 공개 여부
         </FormLabel>
-        <RadioGroup sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-          <FormControlLabel value="true" control={<Radio />} label="공개" />
-          <FormControlLabel value="false" control={<Radio />} label="비공개" />
-        </RadioGroup>
+        <Controller
+          name="visibility"
+          control={control}
+          render={({ field, fieldState }) => (
+            <RadioGroup
+              {...field}
+              sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}
+              value={field.value.toString()}
+              onChange={(e) => field.onChange(e.target.value === 'true')}
+            >
+              <FormControlLabel value="true" control={<Radio />} label="공개" />
+              <FormControlLabel value="false" control={<Radio />} label="비공개" />
+            </RadioGroup>
+          )}
+        />
       </FormGrid>
     </Grid>
   );

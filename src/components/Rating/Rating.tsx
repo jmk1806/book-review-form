@@ -1,8 +1,10 @@
-import { FormControlLabel, MenuItem, Radio, RadioGroup, TextField } from '@mui/material';
+import { FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
 import StarRating from '@mui/material/Rating';
 import { styled } from '@mui/material/styles';
+import { useFormContext, Controller } from 'react-hook-form';
+import type { BookReviewForm } from '@/types/BookReviewForm';
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -10,28 +12,66 @@ const FormGrid = styled(Grid)(() => ({
 }));
 
 export function Rating() {
+  const { control } = useFormContext<BookReviewForm>();
+
   return (
     <Grid container spacing={3}>
       <FormGrid size={12}>
         <FormLabel htmlFor="book-recommend" required>
           도서 추천 여부
         </FormLabel>
-        <RadioGroup sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-          <FormControlLabel value="true" control={<Radio />} label="추천" />
-          <FormControlLabel value="false" control={<Radio />} label="비추천" />
-        </RadioGroup>
+        <Controller
+          name="recommend"
+          control={control}
+          render={({ field, fieldState }) => (
+            <RadioGroup
+              {...field}
+              sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}
+              value={field.value.toString()}
+              onChange={(e) => field.onChange(e.target.value === 'true')}
+            >
+              <FormControlLabel value="true" control={<Radio />} label="추천" />
+              <FormControlLabel value="false" control={<Radio />} label="비추천" />
+            </RadioGroup>
+          )}
+        />
       </FormGrid>
       <FormGrid size={12}>
         <FormLabel htmlFor="book-rating" required>
           도서 평점
         </FormLabel>
-        <StarRating name="book-rating" defaultValue={2.5} precision={0.5} />
+        <Controller
+          name="rating"
+          control={control}
+          render={({ field, fieldState }) => (
+            <StarRating
+              {...field}
+              value={field.value}
+              onChange={(_, newValue) => field.onChange(newValue || 0)}
+              precision={0.5}
+            />
+          )}
+        />
       </FormGrid>
       <FormGrid size={12}>
         <FormLabel htmlFor="book-comment" required>
           감상평
         </FormLabel>
-        <TextField id="book-comment" name="book-comment" placeholder="감상평" multiline rows={4} />
+        <Controller
+          name="comment"
+          control={control}
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="book-comment"
+              placeholder="감상평"
+              multiline
+              rows={4}
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
+        />
       </FormGrid>
     </Grid>
   );
