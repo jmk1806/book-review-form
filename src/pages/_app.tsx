@@ -27,16 +27,17 @@ export default function App({ Component, pageProps }: AppProps) {
       status: ReadingStatus.WISH_TO_READ,
       rating: 0,
       comment: '',
-      quotes: [],
+      quotes: [
+        {
+          page: 0,
+          text: '',
+        },
+      ],
       recommend: false,
       visibility: true,
       publishDate: new Date(),
     },
   });
-
-  // zodResolver 테스트
-  console.log('🔍 useForm 초기화됨');
-  console.log('🔍 methods.formState.errors:', methods.formState.errors);
 
   return (
     <QueryClientProvider client={queryClient}>
