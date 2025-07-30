@@ -3,10 +3,7 @@ import { ReadingStatus } from './BookInfo';
 import dayjs from 'dayjs';
 
 export const QuoteSchema = z.object({
-  page: z
-    .number({ error: '페이지 번호가 필요합니다.' })
-    .int('정수여야 합니다.')
-    .min(1, '1 페이지 이상이어야 합니다.'),
+  page: z.number().int('정수여야 합니다.').min(1, '1 페이지 이상이어야 합니다.'),
   text: z.string({ error: '인용구 문구가 필요합니다.' }).min(1, '인용구를 입력하세요.'),
 });
 export type Quote = z.infer<typeof QuoteSchema>;
