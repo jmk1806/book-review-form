@@ -7,6 +7,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
 import { ReadingStatus } from '@/types/BookInfo';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -18,6 +19,7 @@ export function BookInfo() {
     watch,
     control,
     formState: { errors },
+    setValue,
   } = useFormContext<BookReviewForm>();
 
   const startDateInputDisabled = watch('status') === ReadingStatus.WISH_TO_READ;
@@ -26,6 +28,19 @@ export function BookInfo() {
     ReadingStatus.READING,
     ReadingStatus.ON_HOLD,
   ].includes(watch('status'));
+
+  useEffect(() => {
+    if (startDateInputDisabled) {
+      setValue('startDate', null);
+    } else {
+      setValue('startDate', new Date());
+    }
+    if (endDateInputDisabled) {
+      setValue('endDate', null);
+    } else {
+      setValue('endDate', new Date());
+    }
+  }, [startDateInputDisabled, endDateInputDisabled, setValue]);
 
   return (
     <Grid container spacing={3}>
