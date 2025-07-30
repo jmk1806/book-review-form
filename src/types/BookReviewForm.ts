@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ReadingStatus } from './BookInfo';
+import dayjs from 'dayjs';
 
 export const QuoteSchema = z.object({
   page: z
@@ -13,10 +14,11 @@ export type Quote = z.infer<typeof QuoteSchema>;
 // 검증 함수에서 사용할 인터페이스
 interface BookReviewFormData {
   status: string;
+  publishDate: Date;
   startDate?: Date;
   endDate?: Date;
   rating: number;
-  comment: string;
+  comment?: string;
   quotes?: Quote[];
   totalPages: number;
 }
@@ -26,13 +28,6 @@ function validateStatusDates(data: BookReviewFormData, ctx: z.RefinementCtx) {
   const { status, startDate, endDate } = data;
   switch (status) {
     case 'WISH_TO_READ':
-      if (startDate || endDate) {
-        ctx.addIssue({
-          code: 'custom',
-          path: ['startDate'],
-          message: '읽고 싶은 책 상태에서는 기간을 입력할 수 없습니다.',
-        });
-      }
       break;
     case 'READING':
     case 'ON_HOLD':
@@ -61,24 +56,79 @@ function validateStatusDates(data: BookReviewFormData, ctx: z.RefinementCtx) {
 
 // 2) 날짜 간 논리 검증
 function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
-  const { startDate, endDate } = data;
-  if (startDate && endDate && startDate > endDate) {
+  const { startDate, endDate, publishDate, status } = data;
+  const today = dayjs();
+
+  if (today.isBefore(publishDate)) {
     ctx.addIssue({
       code: 'custom',
-      path: ['startDate'],
-      message: '시작일은 종료일보다 이전이어야 합니다.',
+      path: ['publishDate'],
+      message: '출판일은 오늘 이후일 수 없습니다.',
     });
+  }
+
+  if (status === ReadingStatus.READING || status === ReadingStatus.ON_HOLD) {
+    if (!startDate) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['startDate'],
+        message: '읽고 싶은 책 또는 보류 중인 책의 경우, 시작일을 입력해야 합니다.',
+      });
+    }
+  } else {
+    if (today.isBefore(startDate)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['startDate'],
+        message: '시작일은 오늘 이후일 수 없습니다.',
+      });
+    } else if (dayjs(publishDate).isAfter(startDate)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['startDate'],
+        message: '시작일은 출판일보다 이후여야 합니다.',
+      });
+    }
+  }
+
+  if (status === ReadingStatus.COMPLETED) {
+    if (!startDate) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['startDate'],
+        message: '읽음 상태에서는 시작일이 필요합니다.',
+      });
+    }
+    if (!endDate) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['endDate'],
+        message: '읽음 상태에서는 종료일이 필요합니다.',
+      });
+    }
+    if (startDate && endDate) {
+      // 두 날짜가 모두 존재할 때만 검증
+      if (dayjs(startDate).isAfter(dayjs(endDate))) {
+        console.log('🔴 에러 추가 시도');
+        ctx.addIssue({
+          code: 'custom',
+          path: ['startDate'],
+          message: '시작일은 종료일보다 이전이어야 합니다.',
+        });
+        console.log('🔴 에러 추가 완료');
+      }
+    }
   }
 }
 
 // 3) 별점 & 감상평 조건
 function validateRatingComment(data: BookReviewFormData, ctx: z.RefinementCtx) {
   const { rating, comment } = data;
-  if ((rating === 0.5 || rating === 5) && (!comment || comment.length < 100)) {
+  if ((rating < 2 || rating >= 4.5) && (comment?.length ?? 0 < 100)) {
     ctx.addIssue({
       code: 'custom',
       path: ['comment'],
-      message: '별점이 0.5 또는 5점인 경우, 최소 100자 이상의 감상평이 필요합니다.',
+      message: '별점이 2점 미만 또는 4.5점 이상인 경우, 최소 100자 이상의 감상평이 필요합니다.',
     });
   }
 }
@@ -99,23 +149,28 @@ function validateQuotesPages(data: BookReviewFormData, ctx: z.RefinementCtx) {
 
 export const BookReviewFormSchema = z
   .object({
-    title: z.string().min(1),
+    title: z.string().min(1, '책 제목을 입력하세요.'),
     author: z.string().min(1),
     totalPages: z.number().min(1),
     status: z.enum(ReadingStatus),
-    startDate: z.date(),
-    endDate: z.date(),
-    rating: z.number().min(1).max(5),
-    comment: z.string().min(1),
+    publishDate: z.date(),
+    startDate: z.date().optional(),
+    endDate: z.date().optional(),
+    rating: z.number(),
+    comment: z.string().optional(),
     quotes: z.array(QuoteSchema),
     recommend: z.boolean(),
     visibility: z.boolean(),
   })
   .superRefine((data, ctx) => {
+    console.log('🔍 superRefine 실행됨');
+    console.log('🔍 data:', data);
+
     validateStatusDates(data, ctx);
     validateDateLogic(data, ctx);
     validateRatingComment(data, ctx);
     validateQuotesPages(data, ctx);
+    console.log('🔍 superRefine 완료');
   });
 
 export type BookReviewForm = z.infer<typeof BookReviewFormSchema>;

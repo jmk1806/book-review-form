@@ -9,7 +9,6 @@ import { ReadingStatus } from '@/types/BookInfo';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
 
 const theme = createTheme({
   palette: {
@@ -20,20 +19,24 @@ const theme = createTheme({
 export default function App({ Component, pageProps }: AppProps) {
   const methods = useForm<BookReviewForm>({
     resolver: zodResolver(BookReviewFormSchema),
+    mode: 'onSubmit',
     defaultValues: {
       title: '',
       author: '',
       totalPages: 0,
       status: ReadingStatus.WISH_TO_READ,
-      startDate: dayjs().toDate(),
-      endDate: dayjs().toDate(),
       rating: 0,
       comment: '',
       quotes: [],
       recommend: false,
       visibility: true,
+      publishDate: new Date(),
     },
   });
+
+  // zodResolver 테스트
+  console.log('🔍 useForm 초기화됨');
+  console.log('🔍 methods.formState.errors:', methods.formState.errors);
 
   return (
     <QueryClientProvider client={queryClient}>
