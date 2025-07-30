@@ -63,14 +63,14 @@ export default function ReviewPage() {
               <Rating />
               <Quotes />
               <Visibility />
-              <Button
+              {/* <Button
                 variant="outlined"
                 color="warning"
                 onClick={handleLogErrors}
                 sx={{ mt: 2, alignSelf: 'flex-start' }}
               >
                 <Typography variant="caption">🔍 폼 에러 로그 출력</Typography>
-              </Button>
+              </Button> */}
             </CardContent>
           </Card>
         </Grid>
