@@ -33,14 +33,14 @@ export default function ReviewPage() {
       case ReadingStatus.ON_HOLD:
       case ReadingStatus.READING:
         setValue('startDate', new Date());
-        setValue('endDate', null as unknown as Date);
+        setValue('endDate', null);
         break;
       case ReadingStatus.COMPLETED:
         setValue('endDate', new Date());
         break;
       default:
-        setValue('startDate', null as unknown as Date);
-        setValue('endDate', null as unknown as Date);
+        setValue('startDate', null);
+        setValue('endDate', null);
     }
   }, [setValue, watch]);
 
