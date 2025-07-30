@@ -15,8 +15,8 @@ export type Quote = z.infer<typeof QuoteSchema>;
 interface BookReviewFormData {
   status: string;
   publishDate: Date;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: Date | null;
+  endDate?: Date | null;
   rating: number;
   comment?: string;
   quotes?: Quote[];
@@ -124,7 +124,10 @@ function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
 // 3) 별점 & 감상평 조건
 function validateRatingComment(data: BookReviewFormData, ctx: z.RefinementCtx) {
   const { rating, comment } = data;
-  if ((rating < 2 || rating >= 4.5) && (comment?.length ?? 0 < 100)) {
+  console.log('🔍 rating:', rating);
+  console.log('🔍 comment:', comment?.length);
+  if (rating >= 2 && rating <= 4) return;
+  if ((comment?.length ?? 0) < 100) {
     ctx.addIssue({
       code: 'custom',
       path: ['comment'],
@@ -150,13 +153,13 @@ function validateQuotesPages(data: BookReviewFormData, ctx: z.RefinementCtx) {
 export const BookReviewFormSchema = z
   .object({
     title: z.string().min(1, '책 제목을 입력하세요.'),
-    author: z.string().min(1),
-    totalPages: z.number().min(1),
+    author: z.string().min(1, '저자를 입력하세요.'),
+    totalPages: z.number().min(1, '전체 페이지 수를 입력하세요.'),
     status: z.enum(ReadingStatus),
     publishDate: z.date(),
-    startDate: z.date().optional(),
-    endDate: z.date().optional(),
-    rating: z.number(),
+    startDate: z.date().optional().nullable(),
+    endDate: z.date().optional().nullable(),
+    rating: z.number().min(0.5, '별점을 입력하세요.').max(5, '별점은 5점 이하여야 합니다.'),
     comment: z.string().optional(),
     quotes: z.array(QuoteSchema),
     recommend: z.boolean(),
