@@ -1,4 +1,4 @@
-import { FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import { FormControlLabel, FormHelperText, Radio, RadioGroup, TextField } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
 import StarRating from '@mui/material/Rating';
@@ -40,13 +40,19 @@ export function Rating() {
           name="rating"
           control={control}
           render={({ field, fieldState }) => (
-            <StarRating
-              {...field}
-              value={field.value}
-              onChange={(_, newValue) => field.onChange(newValue || 0)}
-              precision={0.5}
-              emptyLabelText={fieldState.error?.message}
-            />
+            <>
+              <StarRating
+                {...field}
+                value={field.value}
+                onChange={(_, newValue) => field.onChange(newValue || 0)}
+                precision={0.5}
+              />
+              {fieldState.error && (
+                <FormHelperText error={!!fieldState.error}>
+                  {fieldState.error?.message}
+                </FormHelperText>
+              )}
+            </>
           )}
         />
       </FormGrid>
