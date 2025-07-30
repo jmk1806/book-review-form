@@ -23,10 +23,10 @@ export default function ReviewPage() {
     console.log('🔴 Form Values:', getValues());
   };
 
-  const handleLogErrors = () => {
-    console.log('🔴 Current Form Errors:', formErrors);
-    console.log('📝 Current Form Values:', getValues());
-  };
+  // const handleLogErrors = () => {
+  //   console.log('🔴 Current Form Errors:', formErrors);
+  //   console.log('📝 Current Form Values:', getValues());
+  // };
 
   useEffect(() => {
     switch (watch('status')) {
