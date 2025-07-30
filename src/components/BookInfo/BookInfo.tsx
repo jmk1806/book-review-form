@@ -1,7 +1,6 @@
-import { MenuItem, Select } from '@mui/material';
+import { MenuItem, Select, TextField } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useFormContext, Controller } from 'react-hook-form';
@@ -16,7 +15,6 @@ const FormGrid = styled(Grid)(() => ({
 
 export function BookInfo() {
   const {
-    register,
     watch,
     control,
     formState: { errors },
@@ -32,76 +30,73 @@ export function BookInfo() {
   return (
     <Grid container spacing={3}>
       <FormGrid size={12}>
-        <FormLabel htmlFor="book-title" required>
-          책 제목
-        </FormLabel>
+        <FormLabel htmlFor="book-title">책 제목</FormLabel>
         <Controller
           name="title"
           control={control}
           render={({ field, fieldState }) => (
-            <OutlinedInput
+            <TextField
               {...field}
               id="book-title"
               placeholder="책 제목"
               autoComplete="book-title"
-              required
               size="small"
               error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+              variant="outlined"
             />
           )}
         />
       </FormGrid>
       <FormGrid size={4}>
-        <FormLabel htmlFor="book-author" required>
-          저자
-        </FormLabel>
+        <FormLabel htmlFor="book-author">저자</FormLabel>
         <Controller
           name="author"
           control={control}
           render={({ field, fieldState }) => (
-            <OutlinedInput
+            <TextField
               {...field}
               id="book-author"
               placeholder="저자"
               autoComplete="book-author"
-              required
               size="small"
               error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+              variant="outlined"
             />
           )}
         />
       </FormGrid>
       <FormGrid size={4}>
-        <FormLabel htmlFor="book-page" required>
-          전체 페이지
-        </FormLabel>
+        <FormLabel htmlFor="book-page">전체 페이지</FormLabel>
         <Controller
           name="totalPages"
           control={control}
           render={({ field, fieldState }) => (
-            <OutlinedInput
+            <TextField
               {...field}
               id="book-page"
               type="number"
               placeholder="전체 페이지"
               autoComplete="book-page"
-              required
               size="small"
               error={!!fieldState.error}
-              onChange={(e) => field.onChange(Number(e.target.value))}
+              helperText={fieldState.error?.message}
+              variant="outlined"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                field.onChange(Number(e.target.value))
+              }
             />
           )}
         />
       </FormGrid>
       <FormGrid size={4}>
-        <FormLabel htmlFor="book-status" required>
-          독서 상태
-        </FormLabel>
+        <FormLabel htmlFor="book-status">독서 상태</FormLabel>
         <Controller
           name="status"
           control={control}
           render={({ field }) => (
-            <Select {...field} id="book-status" required size="small" error={!!errors.status}>
+            <Select {...field} id="book-status" size="small" error={!!errors.status}>
               <MenuItem value={ReadingStatus.WISH_TO_READ}>읽고 싶은 책</MenuItem>
               <MenuItem value={ReadingStatus.READING}>읽는 중</MenuItem>
               <MenuItem value={ReadingStatus.COMPLETED}>읽음</MenuItem>
@@ -110,10 +105,30 @@ export function BookInfo() {
           )}
         />
       </FormGrid>
-      <FormGrid size={3}>
-        <FormLabel htmlFor="start-date" required>
-          시작일
-        </FormLabel>
+      <FormGrid size={4}>
+        <FormLabel htmlFor="publish-date">출판일</FormLabel>
+        <Controller
+          name="publishDate"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(newValue) => {
+                field.onChange(newValue ? newValue.toDate() : new Date());
+              }}
+              slotProps={{
+                textField: {
+                  size: 'small',
+                  error: !!errors.publishDate,
+                  helperText: errors.publishDate?.message,
+                },
+              }}
+            />
+          )}
+        />
+      </FormGrid>
+      <FormGrid size={4}>
+        <FormLabel htmlFor="start-date">시작일</FormLabel>
         <Controller
           name="startDate"
           control={control}
@@ -135,10 +150,8 @@ export function BookInfo() {
           )}
         />
       </FormGrid>
-      <FormGrid size={3}>
-        <FormLabel htmlFor="end-date" required>
-          종료일
-        </FormLabel>
+      <FormGrid size={4}>
+        <FormLabel htmlFor="end-date">종료일</FormLabel>
         <Controller
           name="endDate"
           control={control}
