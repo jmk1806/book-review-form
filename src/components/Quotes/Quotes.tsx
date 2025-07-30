@@ -69,7 +69,7 @@ export function Quotes() {
               variant="outlined"
               color="warning"
               onClick={() => remove(fields.length - 1)}
-              disabled={fields.length === 1}
+              disabled={fields.length <= 1}
             >
               인용구 삭제
             </Button>
