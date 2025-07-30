@@ -1,7 +1,6 @@
-import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
-import StarRating from '@mui/material/Rating';
 import { styled } from '@mui/material/styles';
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
@@ -28,12 +27,19 @@ export function Quotes() {
               <Controller
                 name={`quotes.${index}.page`}
                 control={control}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <TextField
                     {...field}
                     id={`book-quotes-${index}-page`}
                     placeholder="페이지"
                     size="small"
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                    type="number"
+                    value={field.value ?? ''}
+                    onChange={(e) =>
+                      field.onChange(e.target.value === '' ? 0 : Number(e.target.value))
+                    }
                   />
                 )}
               />
@@ -42,12 +48,14 @@ export function Quotes() {
               <Controller
                 name={`quotes.${index}.text`}
                 control={control}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <TextField
                     {...field}
                     id={`book-quotes-${index}`}
                     placeholder="인용구"
                     size="small"
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
                   />
                 )}
               />
