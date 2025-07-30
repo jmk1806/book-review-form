@@ -15,13 +15,11 @@ export function Visibility() {
   return (
     <Grid container spacing={3}>
       <FormGrid size={12}>
-        <FormLabel htmlFor="book-visibility" required>
-          도서 공개 여부
-        </FormLabel>
+        <FormLabel htmlFor="book-visibility">공개 여부</FormLabel>
         <Controller
           name="visibility"
           control={control}
-          render={({ field, fieldState }) => (
+          render={({ field }) => (
             <RadioGroup
               {...field}
               sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}
