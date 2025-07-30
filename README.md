@@ -37,38 +37,35 @@ yarn dev
 
 ### 1단계 : 도서의 기본 정보, 독서 상태, 독서 시작일 및 종료일
 
-- 도서의 기본 정보
-  - 책 제목(title)
-  - 저자(author)
-  - 전체 페이지 수(totalPages)
-  - 독서 상태(status)
-    - 읽고 싶은 책 : `WISH_TO_READ`
-    - 읽는 중 : `READING`
-    - 읽음 : `COMPLETED`
-    - 보류 중 : `ON_HOLD`
-  - 출판일(publishDate)
-  - 시작일(startDate)
-  - 종료일(endDate)
+- 책 제목(title)
+- 저자(author)
+- 전체 페이지 수(totalPages)
+- 독서 상태(status)
+  - 읽고 싶은 책 : `WISH_TO_READ`
+  - 읽는 중 : `READING`
+  - 읽음 : `COMPLETED`
+  - 보류 중 : `ON_HOLD`
+- 출판일(publishDate)
+- 시작일(startDate)
+- 종료일(endDate)
 
 ### 2단계 : 도서 추천 여부, 별점
 
-- 도서의 추천 여부
-  - 추천 여부(recommend)
-  - 별점(rating)
-    - 0~5 사이의 수를 0.5 단위로 지정할 수 있다.
+- 추천 여부(recommend)
+- 별점(rating)
+  - 0~5 사이의 수를 0.5 단위로 지정할 수 있다.
 
 ### 3단계 : 독후감
 
-- 독후감
+- 독후감(comment)
   - 별점이 2 ~ 4점 사이일 경우 독후감 필드는 입력하지 않아도 된다.
   - 그 외의 경우, 최소 100자 이상을 작성해야 한다.
 
 ### 4단계 : 인용구
 
-- 인용구
-  - 페이지 번호(page)
-    - 도서의 전체 페이지 수보다 작아야 한다.
-  - 인용구(text)
+- 페이지 번호(page)
+  - 도서의 전체 페이지 수보다 작아야 한다.
+- 인용구(text)
 
 ### 5단계 : 공개 여부
 
