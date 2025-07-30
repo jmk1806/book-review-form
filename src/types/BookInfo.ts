@@ -6,11 +6,3 @@ export enum ReadingStatus {
   COMPLETED = 'COMPLETED',
   ON_HOLD = 'ON_HOLD',
 }
-
-export interface BookInfo {
-  title: string;
-  author: string;
-  status: ReadingStatus;
-  startDate: Dayjs;
-  endDate: Dayjs;
-}
