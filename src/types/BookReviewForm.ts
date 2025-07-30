@@ -72,20 +72,12 @@ function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
         message: '읽고 싶은 책 또는 보류 중인 책의 경우, 시작일을 입력해야 합니다.',
       });
     }
-  } else {
-    if (today.isBefore(startDate)) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['startDate'],
-        message: '시작일은 오늘 이후일 수 없습니다.',
-      });
-    } else if (dayjs(publishDate).isAfter(startDate)) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['startDate'],
-        message: '시작일은 출판일보다 이후여야 합니다.',
-      });
-    }
+  } else if (dayjs(publishDate).isAfter(startDate)) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['startDate'],
+      message: '시작일은 출판일보다 이후여야 합니다.',
+    });
   }
 
   if (status === ReadingStatus.COMPLETED) {
@@ -93,14 +85,14 @@ function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
       ctx.addIssue({
         code: 'custom',
         path: ['startDate'],
-        message: '읽음 상태에서는 시작일이 필요합니다.',
+        message: '시작일이 필요합니다.',
       });
     }
     if (!endDate) {
       ctx.addIssue({
         code: 'custom',
         path: ['endDate'],
-        message: '읽음 상태에서는 종료일이 필요합니다.',
+        message: '종료일이 필요합니다.',
       });
     }
     if (startDate && endDate) {
