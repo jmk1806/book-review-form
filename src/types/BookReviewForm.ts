@@ -103,6 +103,11 @@ function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
           path: ['startDate'],
           message: '시작일은 종료일보다 이전이어야 합니다.',
         });
+        ctx.addIssue({
+          code: 'custom',
+          path: ['endDate'],
+          message: '종료일은 시작일보다 이후여야 합니다.',
+        });
       }
     }
   }
