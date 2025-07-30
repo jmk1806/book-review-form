@@ -106,13 +106,11 @@ function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
     if (startDate && endDate) {
       // 두 날짜가 모두 존재할 때만 검증
       if (dayjs(startDate).isAfter(dayjs(endDate))) {
-        console.log('🔴 에러 추가 시도');
         ctx.addIssue({
           code: 'custom',
           path: ['startDate'],
           message: '시작일은 종료일보다 이전이어야 합니다.',
         });
-        console.log('🔴 에러 추가 완료');
       }
     }
   }
@@ -121,8 +119,6 @@ function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
 // 3) 별점 & 감상평 조건
 function validateRatingComment(data: BookReviewFormData, ctx: z.RefinementCtx) {
   const { rating, comment } = data;
-  console.log('🔍 rating:', rating);
-  console.log('🔍 comment:', comment?.length);
   if (rating >= 2 && rating <= 4) return;
   if ((comment?.length ?? 0) < 100) {
     ctx.addIssue({
@@ -163,14 +159,10 @@ export const BookReviewFormSchema = z
     visibility: z.boolean(),
   })
   .superRefine((data, ctx) => {
-    console.log('🔍 superRefine 실행됨');
-    console.log('🔍 data:', data);
-
     validateStatusDates(data, ctx);
     validateDateLogic(data, ctx);
     validateRatingComment(data, ctx);
     validateQuotesPages(data, ctx);
-    console.log('🔍 superRefine 완료');
   });
 
 export type BookReviewForm = z.infer<typeof BookReviewFormSchema>;
