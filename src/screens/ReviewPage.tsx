@@ -1,5 +1,5 @@
 import { BookInfo } from '@/components/BookInfo';
-import { Box, Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Container, Grid } from '@mui/material';
 import { useEffect } from 'react';
 import { Rating } from '@/components/Rating';
 import { Quotes } from '@/components/Quotes';

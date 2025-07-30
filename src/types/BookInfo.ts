@@ -1,5 +1,3 @@
-import { Dayjs } from 'dayjs';
-
 export enum ReadingStatus {
   WISH_TO_READ = 'WISH_TO_READ',
   READING = 'READING',
