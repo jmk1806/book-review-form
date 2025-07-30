@@ -19,6 +19,7 @@ export default function ReviewPage() {
   } = useFormContext<BookReviewForm>();
 
   const onSubmit = () => {
+    window.alert('유효성 검증 통과!');
     console.log('🔴 Form Values:', getValues());
   };
 
