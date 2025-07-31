@@ -151,7 +151,7 @@ export function BookInfo() {
             <DatePicker
               value={field.value ? dayjs(field.value) : null}
               onChange={(newValue) => {
-                field.onChange(newValue ? newValue.toDate() : new Date());
+                field.onChange(newValue ? newValue.toDate() : null);
               }}
               slotProps={{
                 textField: {

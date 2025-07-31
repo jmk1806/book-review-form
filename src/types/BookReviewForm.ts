@@ -72,7 +72,7 @@ function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
         message: '읽고 싶은 책 또는 보류 중인 책의 경우, 시작일을 입력해야 합니다.',
       });
     }
-  } else if (dayjs(publishDate).isAfter(startDate)) {
+  } else if (startDate && dayjs(publishDate).isAfter(startDate)) {
     ctx.addIssue({
       code: 'custom',
       path: ['startDate'],
