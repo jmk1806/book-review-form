@@ -3,7 +3,7 @@
   "plugins": ["eslint-comments", "sort-exports"],
   "overrides": [
     {
-      "files": ["*.js", "*.jsx"],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["eslint:recommended", "airbnb", "airbnb/hooks", "plugin:prettier/recommended"],
       "rules": {
         "class-methods-use-this": "off",
@@ -50,8 +50,7 @@
             "allowTaggedTemplates": true
           }
         ],
-        "import/no-extraneous-dependencies": "off",
-        "@typescript-eslint/no-unused-vars": "error"
+        "import/no-extraneous-dependencies": "off"
       }
     },
     {
