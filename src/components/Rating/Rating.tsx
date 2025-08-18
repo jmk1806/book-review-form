@@ -2,15 +2,10 @@ import { FormControlLabel, FormHelperText, Radio, RadioGroup, TextField } from '
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
 import StarRating from '@mui/material/Rating';
-import { styled } from '@mui/material/styles';
 import { useFormContext, Controller } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
 import { hasFieldError } from '@/utils/hasFieldError';
-
-const FormGrid = styled(Grid)(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-}));
+import { FormGrid } from '../Common';
 
 export function Rating() {
   const { control } = useFormContext<BookReviewForm>();

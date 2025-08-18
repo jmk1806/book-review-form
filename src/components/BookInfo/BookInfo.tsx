@@ -1,18 +1,13 @@
 import { MenuItem, Select, TextField } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useFormContext, Controller } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
 import { ReadingStatus } from '@/types/BookInfo';
 import dayjs from 'dayjs';
 import { hasFieldError } from '@/utils/hasFieldError';
-
-const FormGrid = styled(Grid)(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-}));
+import { FormGrid } from '../Common';
 
 export function BookInfo() {
   const {

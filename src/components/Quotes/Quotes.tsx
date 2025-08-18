@@ -1,15 +1,10 @@
 import { Button, TextField } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
 import { hasFieldError } from '@/utils/hasFieldError';
-
-const FormGrid = styled(Grid)(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-}));
+import { FormGrid } from '../Common';
 
 export function Quotes() {
   const { control } = useFormContext<BookReviewForm>();
