@@ -42,7 +42,7 @@ export function BookInfo() {
               placeholder="책 제목"
               autoComplete="book-title"
               size="small"
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
               variant="outlined"
             />
@@ -61,7 +61,7 @@ export function BookInfo() {
               placeholder="저자"
               autoComplete="book-author"
               size="small"
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
               variant="outlined"
             />
@@ -81,7 +81,7 @@ export function BookInfo() {
               placeholder="전체 페이지"
               autoComplete="book-page"
               size="small"
-              error={!!fieldState.error}
+              error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
               variant="outlined"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -101,7 +101,7 @@ export function BookInfo() {
               {...field}
               id="book-status"
               size="small"
-              error={!!errors.status}
+              error={Boolean(errors.status)}
               onChange={(e) => {
                 const nextStatus = e.target.value as ReadingStatus;
                 field.onChange(nextStatus);
@@ -138,7 +138,7 @@ export function BookInfo() {
               slotProps={{
                 textField: {
                   size: 'small',
-                  error: !!errors.publishDate,
+                  error: Boolean(errors.publishDate),
                   helperText: errors.publishDate?.message,
                 },
               }}
@@ -160,7 +160,7 @@ export function BookInfo() {
               slotProps={{
                 textField: {
                   size: 'small',
-                  error: !!errors.startDate,
+                  error: Boolean(errors.startDate),
                   helperText: errors.startDate?.message,
                 },
               }}
@@ -183,7 +183,7 @@ export function BookInfo() {
               slotProps={{
                 textField: {
                   size: 'small',
-                  error: !!errors.endDate,
+                  error: Boolean(errors.endDate),
                   helperText: errors.endDate?.message,
                 },
               }}
