@@ -5,6 +5,7 @@ import StarRating from '@mui/material/Rating';
 import { styled } from '@mui/material/styles';
 import { useFormContext, Controller } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
+import { hasFieldError } from '@/utils/hasFieldError';
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -48,7 +49,7 @@ export function Rating() {
                 precision={0.5}
               />
               {fieldState.error && (
-                <FormHelperText error={!!fieldState.error}>
+                <FormHelperText error={hasFieldError(fieldState.error)}>
                   {fieldState.error?.message}
                 </FormHelperText>
               )}
@@ -68,7 +69,7 @@ export function Rating() {
               placeholder="독후감"
               multiline
               rows={4}
-              error={!!fieldState.error}
+              error={hasFieldError(fieldState.error)}
               helperText={fieldState.error?.message}
             />
           )}

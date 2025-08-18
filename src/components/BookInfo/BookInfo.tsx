@@ -7,6 +7,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
 import { ReadingStatus } from '@/types/BookInfo';
 import dayjs from 'dayjs';
+import { hasFieldError } from '@/utils/hasFieldError';
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -42,7 +43,7 @@ export function BookInfo() {
               placeholder="책 제목"
               autoComplete="book-title"
               size="small"
-              error={Boolean(fieldState.error)}
+              error={hasFieldError(fieldState.error)}
               helperText={fieldState.error?.message}
               variant="outlined"
             />
@@ -61,7 +62,7 @@ export function BookInfo() {
               placeholder="저자"
               autoComplete="book-author"
               size="small"
-              error={Boolean(fieldState.error)}
+              error={hasFieldError(fieldState.error)}
               helperText={fieldState.error?.message}
               variant="outlined"
             />
@@ -81,7 +82,7 @@ export function BookInfo() {
               placeholder="전체 페이지"
               autoComplete="book-page"
               size="small"
-              error={Boolean(fieldState.error)}
+              error={hasFieldError(fieldState.error)}
               helperText={fieldState.error?.message}
               variant="outlined"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -101,7 +102,7 @@ export function BookInfo() {
               {...field}
               id="book-status"
               size="small"
-              error={Boolean(errors.status)}
+              error={hasFieldError(errors.status)}
               onChange={(e) => {
                 const nextStatus = e.target.value as ReadingStatus;
                 field.onChange(nextStatus);
@@ -138,7 +139,7 @@ export function BookInfo() {
               slotProps={{
                 textField: {
                   size: 'small',
-                  error: Boolean(errors.publishDate),
+                  error: hasFieldError(errors.publishDate),
                   helperText: errors.publishDate?.message,
                 },
               }}
@@ -160,7 +161,7 @@ export function BookInfo() {
               slotProps={{
                 textField: {
                   size: 'small',
-                  error: Boolean(errors.startDate),
+                  error: hasFieldError(errors.startDate),
                   helperText: errors.startDate?.message,
                 },
               }}
@@ -183,7 +184,7 @@ export function BookInfo() {
               slotProps={{
                 textField: {
                   size: 'small',
-                  error: Boolean(errors.endDate),
+                  error: hasFieldError(errors.endDate),
                   helperText: errors.endDate?.message,
                 },
               }}
