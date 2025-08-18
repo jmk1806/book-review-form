@@ -7,7 +7,6 @@ import { useFormContext, Controller } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
 import { ReadingStatus } from '@/types/BookInfo';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
@@ -28,19 +27,6 @@ export function BookInfo() {
     ReadingStatus.READING,
     ReadingStatus.ON_HOLD,
   ].includes(watch('status'));
-
-  useEffect(() => {
-    if (startDateInputDisabled) {
-      setValue('startDate', null);
-    } else {
-      setValue('startDate', new Date());
-    }
-    if (endDateInputDisabled) {
-      setValue('endDate', null);
-    } else {
-      setValue('endDate', new Date());
-    }
-  }, [startDateInputDisabled, endDateInputDisabled, setValue]);
 
   return (
     <Grid container spacing={3}>
@@ -111,7 +97,25 @@ export function BookInfo() {
           name="status"
           control={control}
           render={({ field }) => (
-            <Select {...field} id="book-status" size="small" error={!!errors.status}>
+            <Select
+              {...field}
+              id="book-status"
+              size="small"
+              error={!!errors.status}
+              onChange={(e) => {
+                const nextStatus = e.target.value as ReadingStatus;
+                field.onChange(nextStatus);
+                if (nextStatus === ReadingStatus.WISH_TO_READ) {
+                  setValue('startDate', null);
+                  setValue('endDate', null);
+                } else if (
+                  nextStatus === ReadingStatus.READING ||
+                  nextStatus === ReadingStatus.ON_HOLD
+                ) {
+                  setValue('endDate', null);
+                }
+              }}
+            >
               <MenuItem value={ReadingStatus.WISH_TO_READ}>읽고 싶은 책</MenuItem>
               <MenuItem value={ReadingStatus.READING}>읽는 중</MenuItem>
               <MenuItem value={ReadingStatus.COMPLETED}>읽음</MenuItem>
@@ -129,7 +133,7 @@ export function BookInfo() {
             <DatePicker
               value={field.value ? dayjs(field.value) : null}
               onChange={(newValue) => {
-                field.onChange(newValue ? newValue.toDate() : new Date());
+                field.onChange(newValue ? newValue.toDate() : null);
               }}
               slotProps={{
                 textField: {
@@ -174,7 +178,7 @@ export function BookInfo() {
             <DatePicker
               value={field.value ? dayjs(field.value) : null}
               onChange={(newValue) => {
-                field.onChange(newValue ? newValue.toDate() : new Date());
+                field.onChange(newValue ? newValue.toDate() : null);
               }}
               slotProps={{
                 textField: {
