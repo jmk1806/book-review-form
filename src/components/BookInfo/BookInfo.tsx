@@ -1,4 +1,4 @@
-import { MenuItem, Select, TextField } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -8,14 +8,17 @@ import { ReadingStatus } from '@/types/BookInfo';
 import dayjs from 'dayjs';
 import { hasFieldError } from '@/utils/hasFieldError';
 import { FormGrid } from '../Common';
+import { RHFTextField, RHFCommaSeparatedTextField, RHFSelect } from '../RHFComponents';
+import { useBookFormHandlers } from '@/hooks/useBookFormHandlers';
 
 export function BookInfo() {
   const {
     watch,
     control,
     formState: { errors },
-    setValue,
   } = useFormContext<BookReviewForm>();
+
+  const { handleReadingStatusChange } = useBookFormHandlers();
 
   const startDateInputDisabled = watch('status') === ReadingStatus.WISH_TO_READ;
   const endDateInputDisabled = [
@@ -28,97 +31,43 @@ export function BookInfo() {
     <Grid container spacing={3}>
       <FormGrid size={12}>
         <FormLabel htmlFor="book-title">책 제목</FormLabel>
-        <Controller
+        <RHFTextField
+          id="book-title"
           name="title"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              id="book-title"
-              placeholder="책 제목"
-              autoComplete="book-title"
-              size="small"
-              error={hasFieldError(fieldState.error)}
-              helperText={fieldState.error?.message}
-              variant="outlined"
-            />
-          )}
+          placeholder="책 제목"
+          autoComplete="book-title"
         />
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="book-author">저자</FormLabel>
-        <Controller
+        <RHFTextField
+          id="book-author"
           name="author"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              id="book-author"
-              placeholder="저자"
-              autoComplete="book-author"
-              size="small"
-              error={hasFieldError(fieldState.error)}
-              helperText={fieldState.error?.message}
-              variant="outlined"
-            />
-          )}
+          placeholder="저자"
+          autoComplete="book-author"
         />
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="book-page">전체 페이지</FormLabel>
-        <Controller
+        <RHFCommaSeparatedTextField
+          id="book-page"
           name="totalPages"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              id="book-page"
-              type="number"
-              placeholder="전체 페이지"
-              autoComplete="book-page"
-              size="small"
-              error={hasFieldError(fieldState.error)}
-              helperText={fieldState.error?.message}
-              variant="outlined"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                field.onChange(Number(e.target.value))
-              }
-            />
-          )}
+          placeholder="전체 페이지"
+          autoComplete="book-page"
         />
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="book-status">독서 상태</FormLabel>
-        <Controller
+        <RHFSelect<BookReviewForm, ReadingStatus>
+          id="book-status"
           name="status"
-          control={control}
-          render={({ field }) => (
-            <Select
-              {...field}
-              id="book-status"
-              size="small"
-              error={hasFieldError(errors.status)}
-              onChange={(e) => {
-                const nextStatus = e.target.value as ReadingStatus;
-                field.onChange(nextStatus);
-                if (nextStatus === ReadingStatus.WISH_TO_READ) {
-                  setValue('startDate', null);
-                  setValue('endDate', null);
-                } else if (
-                  nextStatus === ReadingStatus.READING ||
-                  nextStatus === ReadingStatus.ON_HOLD
-                ) {
-                  setValue('endDate', null);
-                }
-              }}
-            >
-              <MenuItem value={ReadingStatus.WISH_TO_READ}>읽고 싶은 책</MenuItem>
-              <MenuItem value={ReadingStatus.READING}>읽는 중</MenuItem>
-              <MenuItem value={ReadingStatus.COMPLETED}>읽음</MenuItem>
-              <MenuItem value={ReadingStatus.ON_HOLD}>보류 중</MenuItem>
-            </Select>
-          )}
-        />
+          onChange={handleReadingStatusChange}
+        >
+          <MenuItem value={ReadingStatus.WISH_TO_READ}>읽고 싶은 책</MenuItem>
+          <MenuItem value={ReadingStatus.READING}>읽는 중</MenuItem>
+          <MenuItem value={ReadingStatus.COMPLETED}>읽음</MenuItem>
+          <MenuItem value={ReadingStatus.ON_HOLD}>보류 중</MenuItem>
+        </RHFSelect>
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="publish-date">출판일</FormLabel>
