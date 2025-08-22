@@ -3,6 +3,7 @@ import type { BookReviewForm } from '@/types/BookReviewForm';
 import { useFormContext, Controller, get } from 'react-hook-form';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import { hasFieldError } from '@/utils/hasFieldError';
 
 export function RHFDatePicker({
   id,
@@ -35,7 +36,7 @@ export function RHFDatePicker({
           slotProps={{
             textField: {
               size,
-              error: Boolean(get(errors, name)),
+              error: hasFieldError(get(errors, name)),
               helperText: get(errors, name)?.message,
             },
           }}

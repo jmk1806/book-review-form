@@ -1,4 +1,5 @@
 import { RHFTextFieldProps } from '@/types/RHFComponents';
+import { hasFieldError } from '@/utils/hasFieldError';
 import { TextField } from '@mui/material';
 import { Controller, useFormContext, get } from 'react-hook-form';
 
@@ -27,7 +28,7 @@ export function RHFTextField({
           autoComplete={autoComplete}
           size={size}
           variant={variant}
-          error={Boolean(get(errors, name))}
+          error={hasFieldError(get(errors, name))}
           helperText={get(errors, name)?.message}
         />
       )}
