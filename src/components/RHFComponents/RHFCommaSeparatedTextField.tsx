@@ -33,7 +33,8 @@ export function RHFCommaSeparatedTextField({
           helperText={get(errors, name)?.message}
           value={formatter.format(field.value)}
           onChange={(e) => {
-            field.onChange(e.target.value.replace(/[^0-9]/g, ''));
+            const newValue = Number(e.target.value.replace(/[^0-9]/g, ''));
+            field.onChange(newValue);
           }}
         />
       )}
