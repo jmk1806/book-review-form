@@ -19,14 +19,16 @@ export function Quotes() {
         <FormLabel htmlFor="book-quotes">인용구</FormLabel>
         {fields.map((field, index) => (
           <Grid container spacing={3} key={field.id}>
-            <FormGrid size={3}>
-              <RHFCommaSeparatedTextField
-                id={`book-quotes-${index}-page`}
-                name={`quotes.${index}.page`}
-                placeholder="페이지"
-                autoComplete="book-quotes-page"
-              />
-            </FormGrid>
+            {fields.length > 1 && (
+              <FormGrid size={3}>
+                <RHFCommaSeparatedTextField
+                  id={`book-quotes-${index}-page`}
+                  name={`quotes.${index}.page`}
+                  placeholder="페이지"
+                  autoComplete="book-quotes-page"
+                />
+              </FormGrid>
+            )}
             <FormGrid size={9}>
               <RHFTextField
                 id={`book-quotes-${index}`}
