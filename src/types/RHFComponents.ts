@@ -1,21 +1,27 @@
 import { PropsWithChildren } from 'react';
-import { FieldValues, UseFormSetValue, Path } from 'react-hook-form';
+import { UseFormSetValue } from 'react-hook-form';
+import type { BookReviewForm } from './BookReviewForm';
+import { ReadingStatus } from './BookInfo';
 
-export interface RHFProps<T extends FieldValues = FieldValues> {
+export interface RHFProps {
   id: string;
-  name: Path<T>;
+  name: keyof BookReviewForm;
 }
 
-export interface RHFTextFieldProps<T extends FieldValues = FieldValues> extends RHFProps<T> {
+export interface RHFTextFieldProps extends RHFProps {
   placeholder?: string;
   autoComplete?: string;
   size?: 'small' | 'medium';
   variant?: 'outlined' | 'filled' | 'standard';
 }
 
-export interface RHFSelectProps<T extends FieldValues = FieldValues, V = unknown>
-  extends RHFProps<T>,
-    PropsWithChildren {
+export interface RHFSelectProps extends RHFProps, PropsWithChildren {
   size?: 'small' | 'medium';
-  onChange?: (value: V, setValue: UseFormSetValue<T>) => void;
+  onChange?: (value: ReadingStatus, setValue: UseFormSetValue<BookReviewForm>) => void;
+}
+
+export interface RHFDatePickerProps extends RHFProps {
+  size?: 'small' | 'medium';
+  onChange?: (value: Date | null, setValue: UseFormSetValue<BookReviewForm>) => void;
+  disabled?: boolean;
 }

@@ -1,16 +1,12 @@
 import type { RHFSelectProps } from '@/types/RHFComponents';
+import type { BookReviewForm } from '@/types/BookReviewForm';
+import { ReadingStatus } from '@/types/BookInfo';
 import { hasFieldError } from '@/utils/hasFieldError';
 import { Select } from '@mui/material';
-import { Controller, useFormContext, FieldValues } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
-export function RHFSelect<T extends FieldValues = FieldValues, V = unknown>({
-  id,
-  name,
-  children,
-  onChange,
-  size = 'small',
-}: RHFSelectProps<T, V>) {
-  const { control, setValue } = useFormContext<T>();
+export function RHFSelect({ id, name, children, onChange, size = 'small' }: RHFSelectProps) {
+  const { control, setValue } = useFormContext<BookReviewForm>();
 
   return (
     <Controller
@@ -23,7 +19,7 @@ export function RHFSelect<T extends FieldValues = FieldValues, V = unknown>({
           size={size}
           error={hasFieldError(fieldState.error)}
           onChange={(e) => {
-            const value = e.target.value as V;
+            const value = e.target.value as ReadingStatus;
             field.onChange(value);
             if (onChange) {
               onChange(value, setValue);
