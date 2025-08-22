@@ -1,11 +1,11 @@
 import { PropsWithChildren } from 'react';
-import { UseFormSetValue } from 'react-hook-form';
+import { UseFormSetValue, FieldPath } from 'react-hook-form';
 import type { BookReviewForm } from './BookReviewForm';
 import { ReadingStatus } from './BookInfo';
 
 export interface RHFProps {
   id: string;
-  name: keyof BookReviewForm;
+  name: FieldPath<BookReviewForm>;
 }
 
 export interface RHFTextFieldProps extends RHFProps {

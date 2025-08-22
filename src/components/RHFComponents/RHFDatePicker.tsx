@@ -1,6 +1,6 @@
 import { RHFDatePickerProps } from '@/types/RHFComponents';
 import type { BookReviewForm } from '@/types/BookReviewForm';
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext, Controller, get } from 'react-hook-form';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
@@ -35,8 +35,8 @@ export function RHFDatePicker({
           slotProps={{
             textField: {
               size,
-              error: Boolean(errors[name]),
-              helperText: errors[name]?.message,
+              error: Boolean(get(errors, name)),
+              helperText: get(errors, name)?.message,
             },
           }}
           disabled={disabled}

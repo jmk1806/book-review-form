@@ -1,7 +1,6 @@
 import { RHFTextFieldProps } from '@/types/RHFComponents';
-import { hasFieldError } from '@/utils/hasFieldError';
 import { TextField } from '@mui/material';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, get } from 'react-hook-form';
 
 export function RHFTextField({
   id,
@@ -11,13 +10,16 @@ export function RHFTextField({
   size = 'small',
   variant = 'outlined',
 }: RHFTextFieldProps) {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState }) => (
+      render={({ field }) => (
         <TextField
           {...field}
           id={id}
@@ -25,8 +27,8 @@ export function RHFTextField({
           autoComplete={autoComplete}
           size={size}
           variant={variant}
-          error={hasFieldError(fieldState.error)}
-          helperText={fieldState.error?.message}
+          error={Boolean(get(errors, name))}
+          helperText={get(errors, name)?.message}
         />
       )}
     />
