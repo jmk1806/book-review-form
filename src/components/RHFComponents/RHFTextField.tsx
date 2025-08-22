@@ -10,6 +10,8 @@ export function RHFTextField({
   autoComplete,
   size = 'small',
   variant = 'outlined',
+  multiline = false,
+  rows,
 }: RHFTextFieldProps) {
   const {
     control,
@@ -30,6 +32,8 @@ export function RHFTextField({
           variant={variant}
           error={hasFieldError(get(errors, name))}
           helperText={get(errors, name)?.message}
+          multiline={multiline}
+          rows={rows}
         />
       )}
     />

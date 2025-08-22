@@ -6,11 +6,10 @@ import dayjs from 'dayjs';
 import { hasFieldError } from '@/utils/hasFieldError';
 
 export function RHFDatePicker({
-  id,
   name,
-  onChange,
   size = 'small',
   disabled = false,
+  onAfterChange,
 }: RHFDatePickerProps) {
   const {
     control,
@@ -29,8 +28,8 @@ export function RHFDatePicker({
           onChange={(newValue) => {
             const dateValue = newValue ? newValue.toDate() : null;
             field.onChange(dateValue);
-            if (onChange) {
-              onChange(dateValue, setValue);
+            if (onAfterChange) {
+              onAfterChange(dateValue, setValue);
             }
           }}
           slotProps={{

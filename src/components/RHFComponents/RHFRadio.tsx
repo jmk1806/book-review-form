@@ -1,28 +1,26 @@
-import type { RHFSelectProps } from '@/types/RHFComponents';
+import { RHFRadioProps } from '@/types/RHFComponents';
+import { Controller, PathValue, useFormContext } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
-import { hasFieldError } from '@/utils/hasFieldError';
-import { Select } from '@mui/material';
-import { Controller, useFormContext, FieldPath, PathValue } from 'react-hook-form';
+import { RadioGroup } from '@mui/material';
+import { FieldPath } from 'react-hook-form';
 
-export function RHFSelect<T extends FieldPath<BookReviewForm>>({
+export function RHFRadio<T extends FieldPath<BookReviewForm>>({
   id,
   name,
   children,
   onAfterChange,
-  size = 'small',
-}: RHFSelectProps<T>) {
+}: RHFRadioProps<T>) {
   const { control, setValue } = useFormContext<BookReviewForm>();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState }) => (
-        <Select
+      render={({ field }) => (
+        <RadioGroup
           {...field}
+          sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}
           id={id}
-          size={size}
-          error={hasFieldError(fieldState.error)}
           onChange={(e) => {
             field.onChange(e.target.value);
             if (onAfterChange) {
@@ -31,7 +29,7 @@ export function RHFSelect<T extends FieldPath<BookReviewForm>>({
           }}
         >
           {children}
-        </Select>
+        </RadioGroup>
       )}
     />
   );

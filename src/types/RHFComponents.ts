@@ -1,27 +1,45 @@
 import { PropsWithChildren } from 'react';
-import { UseFormSetValue, FieldPath } from 'react-hook-form';
+import { UseFormSetValue, FieldPath, PathValue } from 'react-hook-form';
 import type { BookReviewForm } from './BookReviewForm';
-import { ReadingStatus } from './BookInfo';
 
 export interface RHFProps {
   id: string;
-  name: FieldPath<BookReviewForm>;
 }
 
 export interface RHFTextFieldProps extends RHFProps {
+  name: FieldPath<BookReviewForm>;
   placeholder?: string;
   autoComplete?: string;
   size?: 'small' | 'medium';
   variant?: 'outlined' | 'filled' | 'standard';
+  multiline?: boolean;
+  rows?: number;
 }
 
-export interface RHFSelectProps extends RHFProps, PropsWithChildren {
+export interface RHFSelectProps<T extends FieldPath<BookReviewForm>>
+  extends RHFProps,
+    PropsWithChildren {
+  name: T;
   size?: 'small' | 'medium';
-  onChange?: (value: ReadingStatus, setValue: UseFormSetValue<BookReviewForm>) => void;
+  onAfterChange?: (
+    value: PathValue<BookReviewForm, T>,
+    setValue: UseFormSetValue<BookReviewForm>,
+  ) => void;
 }
 
 export interface RHFDatePickerProps extends RHFProps {
+  name: FieldPath<BookReviewForm>;
   size?: 'small' | 'medium';
-  onChange?: (value: Date | null, setValue: UseFormSetValue<BookReviewForm>) => void;
+  onAfterChange?: (value: Date | null, setValue: UseFormSetValue<BookReviewForm>) => void;
   disabled?: boolean;
+}
+
+export interface RHFRadioProps<T extends FieldPath<BookReviewForm>>
+  extends RHFProps,
+    PropsWithChildren {
+  name: T;
+  onAfterChange?: (
+    value: PathValue<BookReviewForm, T>,
+    setValue: UseFormSetValue<BookReviewForm>,
+  ) => void;
 }
