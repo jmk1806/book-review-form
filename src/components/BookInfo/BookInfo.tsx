@@ -1,22 +1,20 @@
-import { MenuItem, TextField } from '@mui/material';
+import { MenuItem } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
 import { ReadingStatus } from '@/types/BookInfo';
-import dayjs from 'dayjs';
-import { hasFieldError } from '@/utils/hasFieldError';
 import { FormGrid } from '../Common';
-import { RHFTextField, RHFCommaSeparatedTextField, RHFSelect } from '../RHFComponents';
+import {
+  RHFTextField,
+  RHFCommaSeparatedTextField,
+  RHFSelect,
+  RHFDatePicker,
+} from '../RHFComponents';
 import { useBookFormHandlers } from '@/hooks/useBookFormHandlers';
 
 export function BookInfo() {
-  const {
-    watch,
-    control,
-    formState: { errors },
-  } = useFormContext<BookReviewForm>();
+  const { watch } = useFormContext<BookReviewForm>();
 
   const { handleReadingStatusChange } = useBookFormHandlers();
 
@@ -58,11 +56,7 @@ export function BookInfo() {
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="book-status">독서 상태</FormLabel>
-        <RHFSelect<BookReviewForm, ReadingStatus>
-          id="book-status"
-          name="status"
-          onChange={handleReadingStatusChange}
-        >
+        <RHFSelect id="book-status" name="status" onChange={handleReadingStatusChange}>
           <MenuItem value={ReadingStatus.WISH_TO_READ}>읽고 싶은 책</MenuItem>
           <MenuItem value={ReadingStatus.READING}>읽는 중</MenuItem>
           <MenuItem value={ReadingStatus.COMPLETED}>읽음</MenuItem>
@@ -71,71 +65,15 @@ export function BookInfo() {
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="publish-date">출판일</FormLabel>
-        <Controller
-          name="publishDate"
-          control={control}
-          render={({ field }) => (
-            <DatePicker
-              value={field.value ? dayjs(field.value) : null}
-              onChange={(newValue) => {
-                field.onChange(newValue ? newValue.toDate() : null);
-              }}
-              slotProps={{
-                textField: {
-                  size: 'small',
-                  error: hasFieldError(errors.publishDate),
-                  helperText: errors.publishDate?.message,
-                },
-              }}
-            />
-          )}
-        />
+        <RHFDatePicker id="publish-date" name="publishDate" />
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="start-date">시작일</FormLabel>
-        <Controller
-          name="startDate"
-          control={control}
-          render={({ field }) => (
-            <DatePicker
-              value={field.value ? dayjs(field.value) : null}
-              onChange={(newValue) => {
-                field.onChange(newValue ? newValue.toDate() : null);
-              }}
-              slotProps={{
-                textField: {
-                  size: 'small',
-                  error: hasFieldError(errors.startDate),
-                  helperText: errors.startDate?.message,
-                },
-              }}
-              disabled={startDateInputDisabled}
-            />
-          )}
-        />
+        <RHFDatePicker id="start-date" name="startDate" disabled={startDateInputDisabled} />
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="end-date">종료일</FormLabel>
-        <Controller
-          name="endDate"
-          control={control}
-          render={({ field }) => (
-            <DatePicker
-              value={field.value ? dayjs(field.value) : null}
-              onChange={(newValue) => {
-                field.onChange(newValue ? newValue.toDate() : null);
-              }}
-              slotProps={{
-                textField: {
-                  size: 'small',
-                  error: hasFieldError(errors.endDate),
-                  helperText: errors.endDate?.message,
-                },
-              }}
-              disabled={endDateInputDisabled}
-            />
-          )}
-        />
+        <RHFDatePicker id="end-date" name="endDate" disabled={endDateInputDisabled} />
       </FormGrid>
     </Grid>
   );
