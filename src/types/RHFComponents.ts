@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { UseFormSetValue, FieldPath, PathValue } from 'react-hook-form';
+import { UseFormSetValue, FieldPath, PathValue, UseFormClearErrors } from 'react-hook-form';
 import type { BookReviewForm } from './BookReviewForm';
 
 export interface RHFProps {
@@ -24,6 +24,7 @@ export interface RHFSelectProps<T extends FieldPath<BookReviewForm>>
   onAfterChange?: (
     value: PathValue<BookReviewForm, T>,
     setValue: UseFormSetValue<BookReviewForm>,
+    clearErrors: UseFormClearErrors<BookReviewForm>,
   ) => void;
 }
 

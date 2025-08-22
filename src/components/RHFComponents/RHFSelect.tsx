@@ -11,7 +11,7 @@ export function RHFSelect<T extends FieldPath<BookReviewForm>>({
   onAfterChange,
   size = 'small',
 }: RHFSelectProps<T>) {
-  const { control, setValue } = useFormContext<BookReviewForm>();
+  const { control, setValue, clearErrors } = useFormContext<BookReviewForm>();
 
   return (
     <Controller
@@ -26,7 +26,7 @@ export function RHFSelect<T extends FieldPath<BookReviewForm>>({
           onChange={(e) => {
             field.onChange(e.target.value);
             if (onAfterChange) {
-              onAfterChange(e.target.value as PathValue<BookReviewForm, T>, setValue);
+              onAfterChange(e.target.value as PathValue<BookReviewForm, T>, setValue, clearErrors);
             }
           }}
         >
