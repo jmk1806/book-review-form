@@ -1,0 +1,6 @@
+export enum ReadingStatus {
+  WISH_TO_READ = 'WISH_TO_READ',
+  READING = 'READING',
+  COMPLETED = 'COMPLETED',
+  ON_HOLD = 'ON_HOLD',
+}

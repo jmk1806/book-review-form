@@ -2,38 +2,74 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+개발 서버 실행:
 
 ```bash
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+개발 서버 실행 뒤 [http://localhost:3000](http://localhost:3000)에서 결과물을 확인하실 수 있습니다.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## 기술 스택
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- TypeScript
+- Next (Page Router)
+- React
+- react-hook-form
+- emotion
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## 유효성 검증
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Zod를 선택한 이유?
 
-## Learn More
+- **React Hook Form 통합 지원**  
+  `@hookform/resolvers/zod`를 이용해, Zod 스키마를 RHF의 `resolver`로 바로 연결하여 유효성 검사를 쉽게 적용할 수 있음
+- **강력한 커스텀 검증**  
+  `.refine()`, `.superRefine()`를 써서 필드 간 복잡한 조건(예: 상태별 날짜 제약, 별점에 따른 최소 글자 수 등)을 한 곳에서 처리할 수 있음
+- 정확한 타입 추출(inference)  
+  Zod는 스키마에서 바로 TypeScript 타입을 추론(infer)하기 때문에, `z.infer<typeof Schema>`를 통해 별도 타입 정의 없이도 검증 로직과 인터페이스를 일치시킬 수 있음
+- 직관적인 선언형 API
+  `.string()`, `.number().min().max()`, `.array().optional()` 같은 메서드 체이닝만으로 유효성 규칙을 읽기 쉽고 깔끔하게 작성할 수 있음
 
-To learn more about Next.js, take a look at the following resources:
+## 단계별 기능 설명
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+실제로 제출되는 전체 form의 타입은 `types/BookReviewForm.ts`의 `BookReviewFormSchema`를 참고해주세요.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1단계 : 도서의 기본 정보, 독서 상태, 독서 시작일 및 종료일
 
-## Deploy on Vercel
+- 책 제목(title)
+- 저자(author)
+- 전체 페이지 수(totalPages)
+- 독서 상태(status)
+  - 읽고 싶은 책 : `WISH_TO_READ`
+  - 읽는 중 : `READING`
+  - 읽음 : `COMPLETED`
+  - 보류 중 : `ON_HOLD`
+- 출판일(publishDate)
+- 시작일(startDate)
+- 종료일(endDate)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2단계 : 도서 추천 여부, 별점
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+- 추천 여부(recommend)
+- 별점(rating)
+  - 0~5 사이의 수를 0.5 단위로 지정할 수 있다.
 
-# book-review-form
+### 3단계 : 독후감
+
+- 독후감(comment)
+  - 별점이 2 ~ 4점 사이일 경우 독후감 필드는 입력하지 않아도 된다.
+  - 그 외의 경우, 최소 100자 이상을 작성해야 한다.
+
+### 4단계 : 인용구
+
+- 페이지 번호(page)
+  - 도서의 전체 페이지 수보다 작아야 한다.
+- 인용구(text)
+
+### 5단계 : 공개 여부
+
+- 공개 여부(visibility)
 
 ## CheckList
 
