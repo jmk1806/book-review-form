@@ -28,7 +28,7 @@ export interface RHFSelectProps<T extends FieldPath<BookReviewForm>>
   ) => void;
 }
 
-export interface RHFDatePickerProps extends RHFProps {
+export interface RHFDatePickerProps {
   name: FieldPath<BookReviewForm>;
   size?: 'small' | 'medium';
   onAfterChange?: (value: Date | null, setValue: UseFormSetValue<BookReviewForm>) => void;
