@@ -1,6 +1,7 @@
 import { RHFTextFieldProps } from '@/types/RHFComponents';
 import { hasFieldError } from '@/utils/hasFieldError';
 import { TextField } from '@mui/material';
+import { useMemo } from 'react';
 import { Controller, useFormContext, get } from 'react-hook-form';
 
 export function RHFCommaSeparatedTextField({
@@ -15,7 +16,7 @@ export function RHFCommaSeparatedTextField({
     control,
     formState: { errors },
   } = useFormContext();
-  const formatter = new Intl.NumberFormat();
+  const formatter = useMemo(() => new Intl.NumberFormat(), []);
 
   return (
     <Controller
