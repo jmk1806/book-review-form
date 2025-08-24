@@ -3,7 +3,7 @@ import { ReadingStatus } from './BookInfo';
 import dayjs from 'dayjs';
 
 export const QuoteSchema = z.object({
-  page: z.number().int('정수여야 합니다.').min(1, '1 페이지 이상이어야 합니다.'),
+  page: z.number().int().optional(),
   text: z.string({ error: '인용구 문구가 필요합니다.' }).min(1, '인용구를 입력하세요.'),
 });
 export type Quote = z.infer<typeof QuoteSchema>;
@@ -16,7 +16,7 @@ interface BookReviewFormData {
   endDate?: Date | null;
   rating: number;
   comment?: string;
-  quotes?: Quote[];
+  quotes?: Array<{ page?: number; text: string }>;
   totalPages: number;
 }
 
@@ -129,8 +129,25 @@ function validateRatingComment(data: BookReviewFormData, ctx: z.RefinementCtx) {
 // 4) 인용구 페이지 번호 검증
 function validateQuotesPages(data: BookReviewFormData, ctx: z.RefinementCtx) {
   const { quotes, totalPages } = data;
-  quotes?.forEach((q: Quote, i: number) => {
-    if (q.page > totalPages) {
+
+  if (!quotes || quotes.length === 0) return;
+
+  // 인용구가 1개일 때는 페이지 번호 검증을 건너뜀 (UI에서 입력받지 않음)
+  if (quotes.length === 1) return;
+
+  quotes.forEach((q, i: number) => {
+    // 인용구가 2개 이상일 때는 페이지 번호가 필수
+    if (quotes.length >= 2 && !q.page) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['quotes', i, 'page'],
+        message: '인용구가 2개 이상일 때는 페이지 번호가 필수입니다.',
+      });
+      return;
+    }
+
+    // 페이지 번호가 있는 경우, 전체 페이지 수를 초과하는지 검증
+    if (q.page && q.page > totalPages) {
       ctx.addIssue({
         code: 'custom',
         path: ['quotes', i, 'page'],
