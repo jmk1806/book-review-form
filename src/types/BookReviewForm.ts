@@ -137,7 +137,7 @@ function validateQuotesPages(data: BookReviewFormData, ctx: z.RefinementCtx) {
 
   quotes.forEach((q, i: number) => {
     // 인용구가 2개 이상일 때는 페이지 번호가 필수
-    if (quotes.length >= 2 && (q.page === undefined || q.page === null || q.page === 0)) {
+    if (quotes.length >= 2 && !q.page) {
       ctx.addIssue({
         code: 'custom',
         path: ['quotes', i, 'page'],
