@@ -65,15 +65,15 @@ export function BookInfo() {
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="publish-date">출판일</FormLabel>
-        <RHFDatePicker id="publish-date" name="publishDate" />
+        <RHFDatePicker name="publishDate" />
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="start-date">시작일</FormLabel>
-        <RHFDatePicker id="start-date" name="startDate" disabled={startDateInputDisabled} />
+        <RHFDatePicker name="startDate" disabled={startDateInputDisabled} />
       </FormGrid>
       <FormGrid size={4}>
         <FormLabel htmlFor="end-date">종료일</FormLabel>
-        <RHFDatePicker id="end-date" name="endDate" disabled={endDateInputDisabled} />
+        <RHFDatePicker name="endDate" disabled={endDateInputDisabled} />
       </FormGrid>
     </Grid>
   );
