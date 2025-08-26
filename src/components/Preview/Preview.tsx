@@ -28,8 +28,8 @@ export function Preview() {
     if (Array.isArray(value)) {
       if (key === 'quotes') {
         const quotesText = value
-          .map((quote: Quote) => `${quote.text} ${quote.page ? `(${quote.page})` : ''}\n`)
-          .join(', ');
+          .map((quote: Quote) => `${quote.text} ${quote.page ? `(${quote.page})` : ''}`)
+          .join(',');
         return `${FIELD_LABELS[key]}: ${quotesText}`;
       }
       return `${FIELD_LABELS[key]}: ${value.join(', ')}`;
