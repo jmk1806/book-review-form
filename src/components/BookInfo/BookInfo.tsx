@@ -3,7 +3,7 @@ import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
 import { useFormContext } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
-import { ReadingStatus } from '@/types/BookInfo';
+import { READING_STATUS_LABELS, ReadingStatus } from '@/constants';
 import { FormGrid } from '../Common';
 import {
   RHFTextField,
@@ -57,10 +57,18 @@ export function BookInfo() {
       <FormGrid size={4}>
         <FormLabel htmlFor="book-status">독서 상태</FormLabel>
         <RHFSelect id="book-status" name="status" onAfterChange={handleReadingStatusChange}>
-          <MenuItem value={ReadingStatus.WISH_TO_READ}>읽고 싶은 책</MenuItem>
-          <MenuItem value={ReadingStatus.READING}>읽는 중</MenuItem>
-          <MenuItem value={ReadingStatus.COMPLETED}>읽음</MenuItem>
-          <MenuItem value={ReadingStatus.ON_HOLD}>보류 중</MenuItem>
+          <MenuItem value={ReadingStatus.WISH_TO_READ}>
+            {READING_STATUS_LABELS[ReadingStatus.WISH_TO_READ]}
+          </MenuItem>
+          <MenuItem value={ReadingStatus.READING}>
+            {READING_STATUS_LABELS[ReadingStatus.READING]}
+          </MenuItem>
+          <MenuItem value={ReadingStatus.COMPLETED}>
+            {READING_STATUS_LABELS[ReadingStatus.COMPLETED]}
+          </MenuItem>
+          <MenuItem value={ReadingStatus.ON_HOLD}>
+            {READING_STATUS_LABELS[ReadingStatus.ON_HOLD]}
+          </MenuItem>
         </RHFSelect>
       </FormGrid>
       <FormGrid size={4}>

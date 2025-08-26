@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ReadingStatus } from './BookInfo';
+import { ReadingStatus } from '@/constants';
 import dayjs from 'dayjs';
 
 export const QuoteSchema = z.object({
@@ -10,7 +10,7 @@ export type Quote = z.infer<typeof QuoteSchema>;
 
 // 검증 함수에서 사용할 인터페이스
 interface BookReviewFormData {
-  status: string;
+  status: ReadingStatus;
   publishDate: Date;
   startDate?: Date | null;
   endDate?: Date | null;
@@ -24,10 +24,10 @@ interface BookReviewFormData {
 function validateStatusDates(data: BookReviewFormData, ctx: z.RefinementCtx) {
   const { status, startDate, endDate } = data;
   switch (status) {
-    case 'WISH_TO_READ':
+    case ReadingStatus.WISH_TO_READ:
       break;
-    case 'READING':
-    case 'ON_HOLD':
+    case ReadingStatus.READING:
+    case ReadingStatus.ON_HOLD:
       if (!startDate) {
         ctx.addIssue({ code: 'custom', path: ['startDate'], message: '시작일을 입력해야 합니다.' });
       }

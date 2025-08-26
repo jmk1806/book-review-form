@@ -1,5 +1,5 @@
 import { UseFormSetValue, UseFormClearErrors } from 'react-hook-form';
-import { ReadingStatus } from '@/types/BookInfo';
+import { ReadingStatus } from '@/constants';
 import type { BookReviewForm } from '@/types/BookReviewForm';
 
 export const useBookFormHandlers = () => {
