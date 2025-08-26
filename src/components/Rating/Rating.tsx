@@ -30,7 +30,7 @@ export function Rating() {
               <StarRating
                 {...field}
                 value={field.value}
-                onChange={(_, newValue) => field.onChange(newValue || 0)}
+                onChange={(_, newValue) => field.onChange(newValue ?? 0)}
                 precision={0.5}
               />
               {fieldState.error && (
