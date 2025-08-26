@@ -3,11 +3,23 @@ import { useFormContext } from 'react-hook-form';
 import { Card, CardContent, Typography } from '@mui/material';
 import { READING_STATUS_LABELS, FIELD_LABELS } from '@/constants/constants';
 import { ReadingStatus } from '@/constants';
+import { useState, useEffect } from 'react';
 
 export function Preview() {
   const { watch } = useFormContext<BookReviewForm>();
+  const formData = watch();
+  const [deferredFormData, setDeferredFormData] = useState(formData);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDeferredFormData(formData);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [formData]);
+
   const getPreviewMessage = (key: keyof BookReviewForm): string => {
-    const value = watch(key);
+    const value = deferredFormData[key];
 
     if (value instanceof Date) {
       return `${FIELD_LABELS[key]}: ${value.toLocaleDateString()}`;
