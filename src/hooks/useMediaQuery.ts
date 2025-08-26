@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 
 export function useMediaQuery(query: string, defaultValue = false) {
-  const isServer = typeof window === 'undefined';
-  const [matches, setMatches] = useState(() => {
-    if (isServer) {
-      return defaultValue;
-    }
+  const [matches, setMatches] = useState(defaultValue);
 
-    return window.matchMedia(query).matches;
-  });
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    setMatches(mediaQuery.matches);
+  }, [query]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(query);
