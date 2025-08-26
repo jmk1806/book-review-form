@@ -14,6 +14,7 @@ export default function ReviewPage() {
     formState: { errors: formErrors },
     getValues,
     handleSubmit,
+    setFocus,
   } = useFormContext<BookReviewForm>();
 
   const onSubmit = () => {
@@ -23,12 +24,15 @@ export default function ReviewPage() {
 
   const isPreviewAvailable = useMediaQuery('(min-width: 1200px)');
 
-  // const handleLogErrors = () => {
-  //   console.log('🔴 Current Form Errors:', formErrors);
-  //   console.log('📝 Current Form Values:', getValues());
-  // };
+  const handleLogErrors = () => {
+    // 첫 번째 에러 필드로 포커스 이동
+    const firstErrorField = Object.keys(formErrors)[0] as keyof BookReviewForm;
+    if (firstErrorField) {
+      setFocus(firstErrorField);
+    }
+  };
 
-  const submit = handleSubmit(onSubmit, () => console.log(formErrors));
+  const submit = handleSubmit(onSubmit, handleLogErrors);
 
   return (
     <Container maxWidth="xl">
