@@ -22,7 +22,7 @@ export default function ReviewPage() {
     console.log('🔴 Form Values:', getValues());
   };
 
-  const isPreviewAvailable = useMediaQuery('(min-width: 1200px)');
+  const isPreviewAvailable = useMediaQuery('(min-width: 1024px)');
 
   const handleLogErrors = () => {
     // 첫 번째 에러 필드로 포커스 이동
