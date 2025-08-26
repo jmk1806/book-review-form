@@ -21,7 +21,7 @@ export function RHFDatePicker({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => (
+      render={({ field: { ref, ...field } }) => (
         <DatePicker
           {...field}
           value={field.value && field.value instanceof Date ? dayjs(field.value) : null}
@@ -34,6 +34,7 @@ export function RHFDatePicker({
           }}
           slotProps={{
             textField: {
+              inputRef: ref,
               size,
               error: hasFieldError(get(errors, name)),
               helperText: get(errors, name)?.message,

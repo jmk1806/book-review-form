@@ -22,9 +22,10 @@ export function RHFTextField({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => (
+      render={({ field: { ref, ...field } }) => (
         <TextField
           {...field}
+          inputRef={ref}
           id={id}
           placeholder={placeholder}
           autoComplete={autoComplete}

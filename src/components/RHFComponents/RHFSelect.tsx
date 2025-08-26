@@ -17,9 +17,10 @@ export function RHFSelect<T extends FieldPath<BookReviewForm>>({
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState }) => (
+      render={({ field: { ref, ...field }, fieldState }) => (
         <Select
           {...field}
+          inputRef={ref}
           id={id}
           size={size}
           error={hasFieldError(fieldState.error)}

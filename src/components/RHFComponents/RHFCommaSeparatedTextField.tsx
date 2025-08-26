@@ -22,9 +22,10 @@ export function RHFCommaSeparatedTextField({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => (
+      render={({ field: { ref, ...field } }) => (
         <TextField
           {...field}
+          inputRef={ref}
           id={id}
           placeholder={placeholder}
           autoComplete={autoComplete}
@@ -32,6 +33,7 @@ export function RHFCommaSeparatedTextField({
           variant={variant}
           error={hasFieldError(get(errors, name))}
           helperText={get(errors, name)?.message}
+          inputProps={{ inputMode: 'numeric' }}
           value={formatter.format(field.value)}
           onChange={(e) => {
             const newValue = Number(e.target.value.replace(/[^0-9]/g, ''));
