@@ -1,7 +1,8 @@
 import { BookReviewForm, Quote } from '@/types/BookReviewForm';
 import { useFormContext } from 'react-hook-form';
 import { Card, CardContent, Typography } from '@mui/material';
-import { FIELD_LABELS } from '@/constants/constants';
+import { READING_STATUS_LABELS, FIELD_LABELS } from '@/constants/constants';
+import { ReadingStatus } from '@/constants';
 
 export function Preview() {
   const { watch } = useFormContext<BookReviewForm>();
@@ -24,6 +25,10 @@ export function Preview() {
 
     if (!value) {
       return `${FIELD_LABELS[key]}: -`;
+    }
+
+    if (key === 'status') {
+      return `${FIELD_LABELS[key]}: ${READING_STATUS_LABELS[value as ReadingStatus]}`;
     }
 
     return `${FIELD_LABELS[key]}: ${value}`;
