@@ -7,11 +7,22 @@ import { FormGrid } from '../Common';
 import { RHFCommaSeparatedTextField, RHFTextField } from '../RHFComponents';
 
 export function Quotes() {
-  const { control } = useFormContext<BookReviewForm>();
+  const { control, setValue } = useFormContext<BookReviewForm>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'quotes',
   });
+
+  const handleRemoveQuote = () => {
+    const isBecomingSingleQuote = fields.length === 2;
+
+    if (isBecomingSingleQuote) {
+      // 인용구가 1개만 남을 때는 페이지 번호를 초기화 (UI에서 페이지 입력 필드가 사라지므로)
+      setValue('quotes.0.page', 0);
+    }
+
+    remove(fields.length - 1);
+  };
 
   return (
     <Grid container spacing={3}>
@@ -53,7 +64,7 @@ export function Quotes() {
             <Button
               variant="outlined"
               color="warning"
-              onClick={() => remove(fields.length - 1)}
+              onClick={handleRemoveQuote}
               disabled={fields.length <= 1}
             >
               인용구 삭제
