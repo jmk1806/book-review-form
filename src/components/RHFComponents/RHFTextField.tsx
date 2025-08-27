@@ -12,6 +12,7 @@ export function RHFTextField({
   variant = 'outlined',
   multiline = false,
   rows,
+  onChange,
 }: RHFTextFieldProps) {
   const {
     control,
@@ -35,6 +36,12 @@ export function RHFTextField({
           helperText={get(errors, name)?.message}
           multiline={multiline}
           rows={rows}
+          onChange={(e) => {
+            field.onChange(e);
+            if (onChange) {
+              onChange(e.target.value);
+            }
+          }}
         />
       )}
     />
