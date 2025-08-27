@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import ReviewPage from '@/screens/ReviewPage';
 import { BookReviewFormSchema, type BookReviewForm } from '@/types/BookReviewForm';
-import { ReadingStatus } from '@/types/BookInfo';
+import { ReadingStatus } from '@/constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 
