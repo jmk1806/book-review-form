@@ -1,16 +1,11 @@
-import { FormControlLabel, FormHelperText, Radio } from '@mui/material';
+import { FormControlLabel, Radio } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
-import StarRating from '@mui/material/Rating';
-import { useFormContext, Controller } from 'react-hook-form';
-import type { BookReviewForm } from '@/types/BookReviewForm';
-import { hasFieldError } from '@/utils/hasFieldError';
 import { FormGrid } from '../Common';
-import { RHFRadio, RHFTextField } from '../RHFComponents';
+import { RHFRadio, RHFSelect, RHFTextField } from '../RHFComponents';
+import MenuItem from '@mui/material/MenuItem';
 
 export function Rating() {
-  const { control } = useFormContext<BookReviewForm>();
-
   return (
     <Grid container spacing={3}>
       <FormGrid size={12}>
@@ -20,27 +15,21 @@ export function Rating() {
           <FormControlLabel value="false" control={<Radio />} label="비추천" />
         </RHFRadio>
       </FormGrid>
-      <FormGrid size={12}>
+      <FormGrid size={3}>
         <FormLabel htmlFor="book-rating">도서 평점</FormLabel>
-        <Controller
-          name="rating"
-          control={control}
-          render={({ field, fieldState }) => (
-            <>
-              <StarRating
-                {...field}
-                value={field.value}
-                onChange={(_, newValue) => field.onChange(newValue ?? 0)}
-                precision={0.5}
-              />
-              {fieldState.error && (
-                <FormHelperText error={hasFieldError(fieldState.error)}>
-                  {fieldState.error?.message}
-                </FormHelperText>
-              )}
-            </>
-          )}
-        />
+        <RHFSelect id="book-rating" name="rating">
+          <MenuItem value={0}>0</MenuItem>
+          <MenuItem value={0.5}>0.5</MenuItem>
+          <MenuItem value={1}>1</MenuItem>
+          <MenuItem value={1.5}>1.5</MenuItem>
+          <MenuItem value={2}>2</MenuItem>
+          <MenuItem value={2.5}>2.5</MenuItem>
+          <MenuItem value={3}>3</MenuItem>
+          <MenuItem value={3.5}>3.5</MenuItem>
+          <MenuItem value={4}>4</MenuItem>
+          <MenuItem value={4.5}>4.5</MenuItem>
+          <MenuItem value={5}>5</MenuItem>
+        </RHFSelect>
       </FormGrid>
       <FormGrid size={12}>
         <FormLabel htmlFor="book-comment">독후감</FormLabel>
