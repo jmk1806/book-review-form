@@ -14,7 +14,6 @@ export interface RHFTextFieldProps extends RHFProps {
   variant?: 'outlined' | 'filled' | 'standard';
   multiline?: boolean;
   rows?: number;
-  onChange?: (value: string) => void;
 }
 
 export interface RHFSelectProps<T extends FieldPath<BookReviewForm>>
