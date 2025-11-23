@@ -6,12 +6,15 @@ import { Visibility } from '@/components/Visibility';
 import { useFormContext } from 'react-hook-form';
 import type { BookReviewForm } from '@/types/BookReviewForm';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { Preview } from '@/components/Preview';
 
 export default function ReviewPage() {
   const {
     formState: { errors: formErrors },
     getValues,
     handleSubmit,
+    setFocus,
   } = useFormContext<BookReviewForm>();
 
   const onSubmit = () => {
@@ -19,18 +22,23 @@ export default function ReviewPage() {
     console.log('🔴 Form Values:', getValues());
   };
 
-  // const handleLogErrors = () => {
-  //   console.log('🔴 Current Form Errors:', formErrors);
-  //   console.log('📝 Current Form Values:', getValues());
-  // };
+  const isPreviewAvailable = useMediaQuery('(min-width: 1024px)');
 
-  const submit = handleSubmit(onSubmit, () => console.log(formErrors));
+  const handleLogErrors = () => {
+    // 첫 번째 에러 필드로 포커스 이동
+    const firstErrorField = Object.keys(formErrors)[0] as keyof BookReviewForm;
+    if (firstErrorField) {
+      setFocus(firstErrorField);
+    }
+  };
+
+  const submit = handleSubmit(onSubmit, handleLogErrors);
 
   return (
     <Container maxWidth="xl">
       <Grid container sx={{ width: '100%', height: '100%', p: 4 }}>
-        <Grid sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
-          <Card sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <Grid sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+          <Card sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
             <CardContent
               sx={{
                 display: 'flex',
@@ -53,6 +61,7 @@ export default function ReviewPage() {
               </Button> */}
             </CardContent>
           </Card>
+          {isPreviewAvailable && <Preview />}
         </Grid>
 
         <Box

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ReadingStatus } from './BookInfo';
+import { ReadingStatus } from '@/constants';
 import dayjs from 'dayjs';
 
 export const QuoteSchema = z.object({
@@ -10,7 +10,7 @@ export type Quote = z.infer<typeof QuoteSchema>;
 
 // 검증 함수에서 사용할 인터페이스
 interface BookReviewFormData {
-  status: string;
+  status: ReadingStatus;
   publishDate: Date;
   startDate?: Date | null;
   endDate?: Date | null;
@@ -24,10 +24,10 @@ interface BookReviewFormData {
 function validateStatusDates(data: BookReviewFormData, ctx: z.RefinementCtx) {
   const { status, startDate, endDate } = data;
   switch (status) {
-    case 'WISH_TO_READ':
+    case ReadingStatus.WISH_TO_READ:
       break;
-    case 'READING':
-    case 'ON_HOLD':
+    case ReadingStatus.READING:
+    case ReadingStatus.ON_HOLD:
       if (!startDate) {
         ctx.addIssue({ code: 'custom', path: ['startDate'], message: '시작일을 입력해야 합니다.' });
       }
@@ -43,7 +43,7 @@ function validateStatusDates(data: BookReviewFormData, ctx: z.RefinementCtx) {
       if (!startDate || !endDate) {
         ctx.addIssue({
           code: 'custom',
-          path: ['startDate'],
+          path: !startDate ? ['startDate'] : ['endDate'],
           message: '완료 상태에서는 시작일과 종료일이 모두 필요합니다.',
         });
       }
@@ -62,6 +62,16 @@ function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
       path: ['publishDate'],
       message: '출판일은 오늘 이후일 수 없습니다.',
     });
+  }
+
+  if (status !== ReadingStatus.WISH_TO_READ) {
+    if (startDate && dayjs(publishDate).isAfter(startDate)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['startDate'],
+        message: '시작일은 출판일보다 이후여야 합니다.',
+      });
+    }
   }
 
   if (status === ReadingStatus.READING || status === ReadingStatus.ON_HOLD) {
@@ -98,11 +108,6 @@ function validateDateLogic(data: BookReviewFormData, ctx: z.RefinementCtx) {
     if (startDate && endDate) {
       // 두 날짜가 모두 존재할 때만 검증
       if (dayjs(startDate).isAfter(dayjs(endDate))) {
-        ctx.addIssue({
-          code: 'custom',
-          path: ['startDate'],
-          message: '시작일은 종료일보다 이전이어야 합니다.',
-        });
         ctx.addIssue({
           code: 'custom',
           path: ['endDate'],
