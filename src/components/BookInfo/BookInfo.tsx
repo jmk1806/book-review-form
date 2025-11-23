@@ -25,6 +25,13 @@ export function BookInfo() {
     ReadingStatus.ON_HOLD,
   ].includes(watch('status'));
 
+  const statusOptions = [
+    ReadingStatus.WISH_TO_READ,
+    ReadingStatus.READING,
+    ReadingStatus.COMPLETED,
+    ReadingStatus.ON_HOLD,
+  ];
+
   return (
     <Grid container spacing={3}>
       <FormGrid size={12}>
@@ -57,18 +64,11 @@ export function BookInfo() {
       <FormGrid size={4}>
         <FormLabel htmlFor="book-status">독서 상태</FormLabel>
         <RHFSelect id="book-status" name="status" onAfterChange={handleReadingStatusChange}>
-          <MenuItem value={ReadingStatus.WISH_TO_READ}>
-            {READING_STATUS_LABELS[ReadingStatus.WISH_TO_READ]}
-          </MenuItem>
-          <MenuItem value={ReadingStatus.READING}>
-            {READING_STATUS_LABELS[ReadingStatus.READING]}
-          </MenuItem>
-          <MenuItem value={ReadingStatus.COMPLETED}>
-            {READING_STATUS_LABELS[ReadingStatus.COMPLETED]}
-          </MenuItem>
-          <MenuItem value={ReadingStatus.ON_HOLD}>
-            {READING_STATUS_LABELS[ReadingStatus.ON_HOLD]}
-          </MenuItem>
+          {statusOptions.map((status) => (
+            <MenuItem key={status} value={status}>
+              {READING_STATUS_LABELS[status]}
+            </MenuItem>
+          ))}
         </RHFSelect>
       </FormGrid>
       <FormGrid size={4}>
