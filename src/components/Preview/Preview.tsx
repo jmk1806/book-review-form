@@ -6,20 +6,19 @@ import { ReadingStatus } from '@/constants';
 import { useState, useEffect } from 'react';
 
 export function Preview() {
-  const { watch } = useFormContext<BookReviewForm>();
-  const formData = watch();
-  const [deferredFormData, setDeferredFormData] = useState(formData);
+  const { getValues } = useFormContext<BookReviewForm>();
+  const [previewData, setPreviewData] = useState<BookReviewForm>(getValues());
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDeferredFormData(formData);
+    const interval = setInterval(() => {
+      setPreviewData(getValues());
     }, 500);
 
-    return () => clearTimeout(timer);
-  }, [formData]);
+    return () => clearInterval(interval);
+  }, [getValues]);
 
   const getPreviewMessage = (key: keyof BookReviewForm): string => {
-    const value = deferredFormData[key];
+    const value = previewData[key];
 
     if (value instanceof Date) {
       return `${FIELD_LABELS[key]}: ${value.toLocaleDateString()}`;
